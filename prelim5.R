@@ -222,9 +222,9 @@ for(i in 2:(reps + burn)){
   like_cand = likelihood(Y - xb,log_sig_det_cand,inv_sig_cand)
   
   #### this is because the time is on the daily scale in code
-  prior_dif = dgamma(cand[n_poly + 1],3,2, log = TRUE ) +  
+  prior_dif = dgamma(cand[n_poly + 1],2,72, log = TRUE ) +  
     sum(dcauchy(cand[-(n_poly + 1)],0,1, log = TRUE )) - 
-    dgamma(pars_now[n_poly + 1],3,2, log = TRUE ) - 
+    dgamma(pars_now[n_poly + 1],2,72, log = TRUE ) - 
     sum(dcauchy(pars_now[-(n_poly + 1)],0,1, log = TRUE ))
   
   MH_dif = my_dmvlnorm(log_now,log_cand,1,log_det1,inv1) -
