@@ -22,7 +22,7 @@ dat$windd_bin = cut(dat$windd,breaks = c(0,45,90,135,180,225,270,315,360))
 dat$time_numeric = (as.numeric(dat$use_time) - min(as.numeric(dat$use_time)))/(24*3600)
 dat$log_winds = log(dat$winds + 1)
 
-month_use = 1:3
+month_use = 3:5
 
 dat_use = dat[which(complete.cases(dat[,c("windd","airt_max","rh_max","solar")]) & 
                       month(dat$date_time) %in% month_use),]
@@ -33,7 +33,7 @@ dd_angle = acos(cos(rdist(dat_use$windd * 2 * pi / 360)))
 dd_season = acos(cos(rdist(dat_use$time_numeric * 2 * pi)))
 dd = rdist(dat_use$time_numeric)
 
-poly_terms = 5
+poly_terms = 6
 n_poly = poly_terms^2
 
 
@@ -146,7 +146,7 @@ likelihood = function(Y,log_det,prec){
 }
 
 reps = 3e4
-burn = 2e4
+burn = 3e4
 tune = 100
 
 b = array(0,c(reps ,n_poly)); b_now = exp(apply(log_b_now_sim,2,mean))
@@ -221,7 +221,6 @@ for(i in 2:(reps + burn)){
   
   like_cand = likelihood(Y - xb,log_sig_det_cand,inv_sig_cand)
   
-  #### this is because the time is on the daily scale in code
   prior_dif = dgamma(cand[n_poly + 1],2,72, log = TRUE ) +  
     sum(dcauchy(cand[-(n_poly + 1)],0,1, log = TRUE )) - 
     dgamma(pars_now[n_poly + 1],2,72, log = TRUE ) - 
@@ -334,5 +333,7 @@ for(i in 2:(reps + burn)){
   
 }
 
-save.image("mod5.RData")
+# saveRDS(pars_save,"par_start6.rds")
+
+save.image("mod6_spring..RData")
 
